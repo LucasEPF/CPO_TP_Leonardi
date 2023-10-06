@@ -37,6 +37,16 @@ if (ouverte == false) {
 } else if (ouverte == true) {
     System.out.println("La bière est déjà ouverte");
 }
-    
+
+}
+
+@Override
+public String toString() {
+String chaine_a_retourner;
+chaine_a_retourner = Nom + " (" + degreAlcool + " degrés) ouverte ? "; 
+if (ouverte == true ) 
+    chaine_a_retourner += "oui" ;
+else chaine_a_retourner += "non" ;
+    return chaine_a_retourner ;
 }
 }
