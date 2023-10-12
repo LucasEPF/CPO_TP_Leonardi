@@ -26,7 +26,7 @@ public class TP2_relation_1_LEONARDI {
     
     bob.liste_voitures[0] = uneClio ;
     bob.nbVoitures = 1 ;
-    uneClio.Proprietaire = Bob ;
+    uneClio.Proprietaire = bob ;
     
     System.out.println("la premiere voiture de Bob est " + 
     bob.liste_voitures[0] ) ;

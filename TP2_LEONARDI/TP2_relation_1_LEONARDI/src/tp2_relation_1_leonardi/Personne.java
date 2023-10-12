@@ -14,11 +14,11 @@ public class Personne {
     int nbVoitures ;
     Voiture [] liste_voitures ;
 
-public Personne (String Nom, String Prenom, int nbvoitures) {
+public Personne (String Nom, String Prenom) {
     nom = Nom;
     prenom = Prenom;
     liste_voitures = new Voiture [3] ;
-    nbvoitures = 0;
+    
 }
 @Override
 public String toString () {
