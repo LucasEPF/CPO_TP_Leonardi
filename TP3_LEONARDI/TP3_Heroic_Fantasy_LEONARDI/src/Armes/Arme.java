@@ -2,15 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tp3_heroic_fantasy_leonardi;
+package Armes;
 
 /**
  *
  * @author leona
  */
 public abstract class Arme {
-    String nom;
+    private String nom;
     int niveau;
+
+public String getNom () {
+    return nom;
+}
 
 public Arme (String Nom, int Niveau) {
     nom = Nom;
@@ -22,7 +26,7 @@ public Arme (String Nom, int Niveau) {
 }
 @Override
 public String toString () {
-    return ("Nom :" + nom + "Niveau :"+ niveau); 
+    return ("Nom : " + nom + ", Niveau : "+ niveau); 
 }       
     
 }

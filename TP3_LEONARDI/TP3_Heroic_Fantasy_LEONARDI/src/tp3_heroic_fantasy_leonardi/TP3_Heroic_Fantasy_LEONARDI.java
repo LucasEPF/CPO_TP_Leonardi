@@ -4,6 +4,12 @@
  */
 package tp3_heroic_fantasy_leonardi;
 
+import Personnages.Personnage;
+import Personnages.Guerrier;
+import Personnages.Magicien;
+import Armes.Epee;
+import Armes.Arme;
+import Armes.Bâton;
 import java.util.ArrayList;
 
 /**
@@ -30,9 +36,20 @@ public class TP3_Heroic_Fantasy_LEONARDI {
     Coffre.add(Chêne);
     Coffre.add(Charme);
     
-}
+    for (int i = 0; i < Coffre.size(); i++) {
+        System.out.println(Coffre.get(i));
+    }
+    Magicien Gandalf = new Magicien ("Gandalf",65,true);
+    Magicien Garcimore = new Magicien ("Garcimore",44,false);
     
+    Guerrier Conan = new Guerrier ("Garcimore",78,false);
+    Guerrier Lannister = new Guerrier ("Lannister",45,true);
     
+    ArrayList<Personnage> Personnages = new ArrayList<Personnage>();
+    Personnages.add(Gandalf);
+    Personnages.add(Garcimore);
+    Personnages.add(Conan);
+    Personnages.add(Lannister);
     
-    
+}   
 }
