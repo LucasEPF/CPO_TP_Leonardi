@@ -4,6 +4,8 @@
  */
 package Personnages;
 
+import Armes.Arme;
+
 /**
  *
  * @author leona
@@ -12,8 +14,8 @@ public class Magicien extends Personnage {
     
     boolean confirmé;
     
-    public Magicien(String Nom, int Niveaudevie, boolean Confirmé) {
-        super(Nom, Niveaudevie);
+    public Magicien(String nom, int NiveauDevie, boolean Confirmé, Arme Arme_Actuelle) {
+        super(nom, NiveauDevie, Arme_Actuelle);
         confirmé = Confirmé;
     }
     

@@ -39,11 +39,11 @@ public class TP3_Heroic_Fantasy_LEONARDI {
     for (int i = 0; i < Coffre.size(); i++) {
         System.out.println(Coffre.get(i));
     }
-    Magicien Gandalf = new Magicien ("Gandalf",65,true);
-    Magicien Garcimore = new Magicien ("Garcimore",44,false);
+    Magicien Gandalf = new Magicien ("Gandalf",65,true, null);
+    Magicien Garcimore = new Magicien ("Garcimore",44,false,null);
     
-    Guerrier Conan = new Guerrier ("Garcimore",78,false);
-    Guerrier Lannister = new Guerrier ("Lannister",45,true);
+    Guerrier Conan = new Guerrier ("Garcimore",78,false,null);
+    Guerrier Lannister = new Guerrier ("Lannister",45,true,null);
     
     ArrayList<Personnage> Personnages = new ArrayList<Personnage>();
     Personnages.add(Gandalf);
@@ -51,5 +51,25 @@ public class TP3_Heroic_Fantasy_LEONARDI {
     Personnages.add(Conan);
     Personnages.add(Lannister);
     
+    Magicien Lucas = new Magicien ("Lucas",99,true,null);
+    Guerrier Honk = new Guerrier ("Honk",68,false,null);
+    Bâton Bâton1 = new Bâton ("Bâton1", 30,10);
+    Bâton Bâton2 = new Bâton ("Bâton2",10, 2);
+    Bâton Bâton3 = new Bâton ("Bâton3", 8,5);
+    Epee Epee1 = new Epee ("Epee1", 8, 1);
+    Epee Epee2 = new Epee ("Epee2", 12,12);
+    Epee Epee3 = new Epee ("Epee3", 36, 67);
+    
+    Honk.Inventaire(Bâton1);
+    Honk.Inventaire(Epee2);
+    Honk.Inventaire(Epee1);
+    Honk.Equiper_Arme(Epee2);
+    
+    Lucas.Inventaire(Bâton2);
+    Lucas.Inventaire(Bâton3);
+    Lucas.Inventaire(Epee3);
+    
+    System.out.println(Lucas.toString());
+    System.out.println(Honk.toString());
 }   
 }
