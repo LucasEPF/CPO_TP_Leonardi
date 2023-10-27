@@ -31,12 +31,24 @@ public class GrilleDeJeu {
         }
     }
 public boolean eteindreToutesLesCellules() {
-        for (int i=0; i<nbLignes; i++) {
-            for (int j=0; j<nbColonnes;j++) {
-               matricesCellules [i][j].eteindreCellule();
-            }              
+   boolean toutesLesCellulesEteintes = false;
+    for (int ligne = 0; ligne < nbLignes; ligne++) {
+        for (int colonne = 0; colonne < nbColonnes; colonne++) {
+            matricesCellules[ligne][colonne].eteindreCellule();
+        }
     }
-        return false;
+
+    // Vérifiez si toutes les cellules sont éteintes
+    for (int ligne = 0; ligne < nbLignes; ligne++) {
+        for (int colonne = 0; colonne < nbColonnes; colonne++) {
+            if (matricesCellules[ligne][colonne].getEtat()) {
+                toutesLesCellulesEteintes = true;
+                break; // Si une cellule n'est pas éteinte, sortez de la boucle
+            }
+        }
+    }
+
+    return toutesLesCellulesEteintes;
 }
 public void activerLigneDeCellules(int idLigne) {
     for (int i=0; i<matricesCellules.length; i++) {
