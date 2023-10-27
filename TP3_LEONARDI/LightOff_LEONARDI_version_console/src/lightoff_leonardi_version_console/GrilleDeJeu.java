@@ -21,6 +21,7 @@ public class GrilleDeJeu {
     public GrilleDeJeu(int p_nbLignes, int p_nbColonnes) {
         nbLignes = p_nbLignes;
         nbColonnes = p_nbColonnes;
+        matricesCellules = new CelluleLumineuse[nbLignes][nbColonnes];
         for (int i=0; i<nbLignes; i++) {
             for (int j=0; j<nbColonnes;j++) {
                matricesCellules [i][j] = new CelluleLumineuse();
@@ -29,12 +30,13 @@ public class GrilleDeJeu {
             
         }
     }
-public void eteindreToutesLesCellules() {
+public boolean eteindreToutesLesCellules() {
         for (int i=0; i<nbLignes; i++) {
             for (int j=0; j<nbColonnes;j++) {
                matricesCellules [i][j].eteindreCellule();
             }              
     }
+        return false;
 }
 public void activerLigneDeCellules(int idLigne) {
     for (int i=0; i<matricesCellules.length; i++) {
@@ -60,30 +62,32 @@ public void activerDiagonaleMontante() {
 }
 public void activerLigneColonneOuDiagonaleAleatoire() {
     Random random = new Random();
-    int randomNumber = random.nextInt(3);
-    int min = Math.min(matricesCellules.length, matricesCellules[0].length);
-    
-    if (randomNumber == 0) {
-        int Aléa = random.nextInt(matricesCellules.length);
-        for (int i=0; i<matricesCellules.length; i++) {
-        matricesCellules [Aléa][i].activerCellule();
-        }
-    } else if (randomNumber == 1) {
-        int Aléa = random.nextInt(matricesCellules.length);
-        for (int j=0; j<matricesCellules.length; j++) {
-        matricesCellules [j][Aléa].activerCellule();
-        }   
-    } else if (randomNumber == 2) {
-        int DiagMAléa = random.nextInt(matricesCellules.length);
-        for (int w=0; w<DiagMAléa; w++) {
-            matricesCellules [w][w].activerCellule();
-        }
-    } else if (randomNumber == 3) {
-        int DiagDAléa = random.nextInt (matricesCellules.length);
-        for (int z=0; z<DiagDAléa; z++) {
-            matricesCellules [z][DiagDAléa-1-z].activerCellule();
-        }
-    }   
+    int randomNumber = random.nextInt(4);
+
+       switch (randomNumber) {
+           case 0 ->                {
+                   int Aléa = random.nextInt(nbLignes);
+                   for (int i=0; i<nbColonnes; i++) {
+                       matricesCellules [Aléa][i].activerCellule();
+                   }                        }
+           case 1 ->                {
+                   int Aléa = random.nextInt(nbColonnes);
+                   for (int j=0; j<nbLignes; j++) {
+                       matricesCellules [j][Aléa].activerCellule();
+                   }                        }
+           case 2 -> {
+               for (int w=0; w<Math.min(nbLignes, nbColonnes); w++) {
+                   matricesCellules [w][w].activerCellule();
+               }
+           }
+           case 3 -> {
+               for (int z=0; z<Math.min(nbLignes,nbColonnes); z++) {
+                   matricesCellules [z][nbColonnes-1-z].activerCellule();
+               }
+           }
+           default -> {
+           }
+       }
 }
 public void melangerMatriceAleatoirement(int nbTours) {
     
@@ -91,6 +95,34 @@ public void melangerMatriceAleatoirement(int nbTours) {
     for (int i=0; i<nbTours; i++) {
         activerLigneColonneOuDiagonaleAleatoire();
     }
+}
+@Override
+public String toString() {
+    String grilleDeJeu = "";
+    grilleDeJeu += "   | ";
+    
+    for (int j = 0; j < nbColonnes; j++) {
+        grilleDeJeu = grilleDeJeu + "" + j + " | ";
+    }
+    grilleDeJeu = grilleDeJeu + "\n";
+    for (int j= 0; j <(nbColonnes+1); j++) {
+        grilleDeJeu +="----";     
+}
+    grilleDeJeu = grilleDeJeu + "\n";
+    
+    for (int i=0; i<nbLignes; i++) {
+        grilleDeJeu += " " + i + " | ";
+        for (int j=0; j <nbColonnes; j++) {
+            grilleDeJeu+= "" + matricesCellules [i][j] + " | ";
+        }
+        grilleDeJeu = grilleDeJeu + "\n";
+        
+        for (int j=0; j<(nbColonnes+1); j++) {
+            grilleDeJeu += "----";
+        }
+        grilleDeJeu += "\n";
+    }
+    return grilleDeJeu;
 }
 }
 
