@@ -30,26 +30,26 @@ public class GrilleDeJeu {
             
         }
     }
-public boolean eteindreToutesLesCellules() {
-   boolean toutesLesCellulesEteintes = false;
+public void eteindreToutesLesCellules() {
+   
     for (int ligne = 0; ligne < nbLignes; ligne++) {
         for (int colonne = 0; colonne < nbColonnes; colonne++) {
             matricesCellules[ligne][colonne].eteindreCellule();
-        }
-    }
-
-    // Vérifiez si toutes les cellules sont éteintes
-    for (int ligne = 0; ligne < nbLignes; ligne++) {
-        for (int colonne = 0; colonne < nbColonnes; colonne++) {
-            if (matricesCellules[ligne][colonne].getEtat()) {
-                toutesLesCellulesEteintes = true;
-                break; // Si une cellule n'est pas éteinte, sortez de la boucle
-            }
-        }
-    }
-
-    return toutesLesCellulesEteintes;
 }
+    }
+}
+public boolean VerifToutesLesCellulesEteintes() {
+   for (int ligne = 0; ligne < nbLignes; ligne++) {
+        for (int colonne = 0; colonne < nbColonnes; colonne++) {
+        if (matricesCellules[ligne][colonne].getEtat()) {
+            return false;
+    
+}
+   }
+}
+   return true;
+}
+
 public void activerLigneDeCellules(int idLigne) {
     for (int i=0; i<matricesCellules.length; i++) {
     matricesCellules [idLigne][i].activerCellule();

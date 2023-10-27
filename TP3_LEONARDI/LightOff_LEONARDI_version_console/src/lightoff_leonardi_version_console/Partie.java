@@ -25,8 +25,8 @@ public void lancerPartie() {
    
    Scanner sc = new Scanner(System.in);
    System.out.println("Bonjour, bienvenue dans LightOFF !");
-   System.out.println(grille);
-   while (!grille.eteindreToutesLesCellules()) {
+   while (!grille.VerifToutesLesCellulesEteintes()) {
+       
        System.out.println(grille);
        System.out.println("Choississez l'action à réaliser : \n 1) Ligne \n 2) Colonne \n 3) Diagonale Montante \n 4) Diagonale Descendante");
        int action = sc.nextInt();
