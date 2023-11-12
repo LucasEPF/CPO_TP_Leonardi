@@ -4,7 +4,11 @@
  */
 package lightoff_leonardi_version_console;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 /**
@@ -17,31 +21,170 @@ public class FenêtrePrincipale extends javax.swing.JFrame {
      * Creates new form FenêtrePrincipale
      */
         GrilleDeJeu grille;
-        int nbCoups; 
+        int nbLignes;
+        int nbColonnes;
+        int nbCoups;
+        int nbCoupsMax=100;
+       
  public void initialiserPartie() {
+     
  grille.eteindreToutesLesCellules();
  grille.melangerMatriceAleatoirement(10);
  }
-public void FinPartie();
-    if ()
-
-    public FenêtrePrincipale() {
+ 
+public FenêtrePrincipale() {
+    
         initComponents();
-        int nbLignes = 5;
-        int nbColonnes = 5;
+        nbLignes = 6;
+        nbColonnes = 6;
         grille = new GrilleDeJeu(nbLignes,nbColonnes);
+        
+        Plateau();
         initialiserPartie();
+        
+    }
+    
+    public void Plateau() {
+        
+        PanneauGrille.removeAll();
+        PanneauBoutonsHorizontaux.removeAll();
+        PanneauBoutonsVerticaux.removeAll();
+        PanneauDifficulté.removeAll();
+      
         PanneauGrille.setLayout(new GridLayout(nbLignes, nbColonnes));
+        
+        
         for (int i=0; i < nbLignes; i++) {
-        for (int j=0; j < nbColonnes; j++ ) {
-        CelluleGraphique bouton_cellule = new CelluleGraphique( grille.matricesCellules[i][j], 36,36);
- // création d'un bouton
-        PanneauGrille.add(bouton_cellule); // ajout au Jpanel PanneauGrille
- }
-}
+            for (int j=0; j < nbColonnes; j++ ) {
+                CelluleGraphique bouton_cellule = new CelluleGraphique( grille.matricesCellules[i][j], 36,36);
+                PanneauGrille.add(bouton_cellule); // ajout au Jpanel PanneauGrill
+            }
+        }
+        getContentPane().add(PanneauGrille, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100,
+        nbColonnes*80, nbLignes*80));
+        this.pack();
+        this.revalidate();
+
+        PanneauBoutonsVerticaux.setLayout(new GridLayout(nbLignes, 1));
+        getContentPane().add(PanneauBoutonsVerticaux, new 
+        org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 1 * 80, nbLignes * 80));
+        this.pack();
+        this.revalidate();
+        
+// création du panneau de boutons verticaux (pour les lignes) 
+    for (int i = 0; i < nbLignes; i++) {
+        final int ligne = i;
+        JButton bouton_ligne = new JButton(""+(i+1));
+        bouton_ligne.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                grille.activerLigneDeCellules(ligne);
+                repaint();
+                FinDePartie(); 
+                nbCoups++;
+                nbCoupsMax--;
+            }
+        });
+            PanneauBoutonsVerticaux.add(bouton_ligne);
 
     }
+    PanneauBoutonsHorizontaux.setLayout(new GridLayout(1, nbColonnes));
+    getContentPane().add(PanneauBoutonsHorizontaux, new 
+    org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, nbColonnes * 80, 1 * 80));
+    this.pack();
+    this.revalidate();
+        
+    for (int j = 0; j < nbColonnes; j++) {
+        final int colonne = j;
+        JButton bouton_colonne = new JButton(""+(j+1));
+        bouton_colonne.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                grille.activerColonneDeCellules(colonne);
+                repaint();
+                FinDePartie();
+                nbCoups++;
+                nbCoupsMax--;
+            }
+        });
+        PanneauBoutonsHorizontaux.add(bouton_colonne);
 
+    }
+    FinDePartie();
+    
+    PanneauDifficulté.setLayout(new GridLayout(1,3));
+    getContentPane().add(PanneauDifficulté, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 600, 3 * 80, 1 * 40));
+    this.pack();
+    this.revalidate();
+    JButton boutonFacile = new JButton("Facile");
+    JButton boutonMoyen = new JButton("Moyen");
+    JButton boutonDifficile = new JButton("Difficile");
+    PanneauDifficulté.add(boutonFacile);
+    PanneauDifficulté.add(boutonMoyen);
+    PanneauDifficulté.add(boutonDifficile);
+    
+    boutonFacile.addActionListener(new ActionListener() { // lorsqu'on clique dessus permet de creer une grille plus simple à résoudre (4X4)
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nbLignes = 5;
+                nbColonnes = 5;
+                nbCoupsMax = 40;
+                grille = new GrilleDeJeu(nbLignes, nbColonnes); // on fixe le nombre de lignes et de colonnes à 4 pour un niveau facile
+                Plateau();// on appelle la méthode pour creer une nouvelle Grille avec les nombres de lignes/colonnes demandés
+                initialiserPartie();
+                PanneauDifficulté.removeAll();
+
+            }
+            });
+
+    boutonMoyen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                nbLignes = 7;
+                nbColonnes = 7;
+                nbCoupsMax = 30;
+                grille = new GrilleDeJeu(nbLignes, nbColonnes);
+                Plateau();
+                initialiserPartie();
+           
+                
+            }
+            });
+        
+    boutonDifficile.addActionListener(new ActionListener() { // lorsqu'on clique dessus permet de creer une grille plus simple à résoudre (4X4)
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                nbLignes = 8;
+                nbColonnes = 8;
+                nbCoupsMax = 20;
+                grille = new GrilleDeJeu(nbLignes, nbColonnes); // on fixe le nombre de lignes et de colonnes à 4 pour un niveau facile
+                Plateau();// on appelle la méthode pour creer une nouvelle Grille avec les nombres de lignes/colonnes demandés
+                initialiserPartie();
+               
+
+            }
+            });
+
+    }
+    public void FinDePartie() {
+        if(nbCoupsMax==0) { 
+            dispose();
+            System.out.println("Vous avez utilisé toutes vos tentatives. Réssayez"); // message affiché dans la console
+        }
+        if (grille.VerifToutesLesCellulesEteintes() == true) {
+            PanneauGrille.setEnabled(false);
+            PanneauBoutonsHorizontaux.setEnabled(false);
+            PanneauBoutonsVerticaux.setEnabled(false);
+            PanneauDifficulté.setEnabled(false);
+        }
+
+    }       
+         
+
+
+                       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,16 +195,9 @@ public void FinPartie();
     private void initComponents() {
 
         PanneauGrille = new javax.swing.JPanel();
-        btnLigne0 = new javax.swing.JButton();
-        btnLigne1 = new javax.swing.JButton();
-        btnLigne2 = new javax.swing.JButton();
-        btnLigne3 = new javax.swing.JButton();
-        btnLigne4 = new javax.swing.JButton();
-        btnColonne0 = new javax.swing.JButton();
-        btnColonne1 = new javax.swing.JButton();
-        btnColonne2 = new javax.swing.JButton();
-        btnColonne3 = new javax.swing.JButton();
-        btnColonne4 = new javax.swing.JButton();
+        PanneauBoutonsVerticaux = new javax.swing.JPanel();
+        PanneauBoutonsHorizontaux = new javax.swing.JPanel();
+        PanneauDifficulté = new javax.swing.JPanel();
         btnDiagonaleMontante = new javax.swing.JButton();
         btnDiagonaleDescendante = new javax.swing.JButton();
 
@@ -83,177 +219,81 @@ public void FinPartie();
             .addGap(0, 370, Short.MAX_VALUE)
         );
 
-        getContentPane().add(PanneauGrille, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 460, 370));
+        getContentPane().add(PanneauGrille, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 460, 370));
 
-        btnLigne0.setText("Ligne 1");
-        btnLigne0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLigne0ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLigne0, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+        javax.swing.GroupLayout PanneauBoutonsVerticauxLayout = new javax.swing.GroupLayout(PanneauBoutonsVerticaux);
+        PanneauBoutonsVerticaux.setLayout(PanneauBoutonsVerticauxLayout);
+        PanneauBoutonsVerticauxLayout.setHorizontalGroup(
+            PanneauBoutonsVerticauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 125, Short.MAX_VALUE)
+        );
+        PanneauBoutonsVerticauxLayout.setVerticalGroup(
+            PanneauBoutonsVerticauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
 
-        btnLigne1.setText("Ligne 2");
-        btnLigne1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLigne1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLigne1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+        getContentPane().add(PanneauBoutonsVerticaux, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, 370));
 
-        btnLigne2.setText("Ligne 3");
-        btnLigne2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLigne2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLigne2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, -1, -1));
+        javax.swing.GroupLayout PanneauBoutonsHorizontauxLayout = new javax.swing.GroupLayout(PanneauBoutonsHorizontaux);
+        PanneauBoutonsHorizontaux.setLayout(PanneauBoutonsHorizontauxLayout);
+        PanneauBoutonsHorizontauxLayout.setHorizontalGroup(
+            PanneauBoutonsHorizontauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 560, Short.MAX_VALUE)
+        );
+        PanneauBoutonsHorizontauxLayout.setVerticalGroup(
+            PanneauBoutonsHorizontauxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-        btnLigne3.setText("Ligne 4");
-        btnLigne3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLigne3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLigne3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
+        getContentPane().add(PanneauBoutonsHorizontaux, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 560, -1));
 
-        btnLigne4.setText("Ligne 5");
-        btnLigne4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLigne4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLigne4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, -1));
+        javax.swing.GroupLayout PanneauDifficultéLayout = new javax.swing.GroupLayout(PanneauDifficulté);
+        PanneauDifficulté.setLayout(PanneauDifficultéLayout);
+        PanneauDifficultéLayout.setHorizontalGroup(
+            PanneauDifficultéLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+        PanneauDifficultéLayout.setVerticalGroup(
+            PanneauDifficultéLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
 
-        btnColonne0.setText("Colonne 1");
-        btnColonne0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColonne0ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnColonne0, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
+        getContentPane().add(PanneauDifficulté, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 120, 70, 370));
 
-        btnColonne1.setText("Colonne 2");
-        btnColonne1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColonne1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnColonne1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
-
-        btnColonne2.setText("Colonne 3");
-        btnColonne2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColonne2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnColonne2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
-
-        btnColonne3.setText("Colonne 4");
-        btnColonne3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColonne3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnColonne3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, -1, -1));
-
-        btnColonne4.setText("Colonne 5");
-        btnColonne4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColonne4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnColonne4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, -1, -1));
-
-        btnDiagonaleMontante.setText("Diagonale Montante");
+        btnDiagonaleMontante.setText("DiagM");
         btnDiagonaleMontante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDiagonaleMontanteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDiagonaleMontante, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, -1, -1));
+        getContentPane().add(btnDiagonaleMontante, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 80, 40));
 
-        btnDiagonaleDescendante.setText("Diagonale Descendante");
+        btnDiagonaleDescendante.setText("DiagD");
         btnDiagonaleDescendante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDiagonaleDescendanteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDiagonaleDescendante, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 420, -1, -1));
+        getContentPane().add(btnDiagonaleDescendante, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 80, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnLigne0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLigne0ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerLigneDeCellules(0);
-        repaint();
-    }//GEN-LAST:event_btnLigne0ActionPerformed
 
     private void btnDiagonaleMontanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiagonaleMontanteActionPerformed
         // TODO add your handling code here:
         this.grille.activerDiagonaleMontante();
         repaint();
+        nbCoups++;
+        FinDePartie();
     }//GEN-LAST:event_btnDiagonaleMontanteActionPerformed
-
-    private void btnLigne2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLigne2ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerLigneDeCellules(2);
-        repaint();
-    }//GEN-LAST:event_btnLigne2ActionPerformed
-
-    private void btnColonne0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColonne0ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerColonneDeCellules(0);
-        repaint();
-    }//GEN-LAST:event_btnColonne0ActionPerformed
-
-    private void btnLigne1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLigne1ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerLigneDeCellules(1);
-        repaint();
-    }//GEN-LAST:event_btnLigne1ActionPerformed
-
-    private void btnLigne3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLigne3ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerLigneDeCellules(3);
-        repaint();
-    }//GEN-LAST:event_btnLigne3ActionPerformed
-
-    private void btnLigne4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLigne4ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerLigneDeCellules(4);
-        repaint();
-    }//GEN-LAST:event_btnLigne4ActionPerformed
-
-    private void btnColonne1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColonne1ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerColonneDeCellules(1);
-        repaint();
-    }//GEN-LAST:event_btnColonne1ActionPerformed
-
-    private void btnColonne2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColonne2ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerColonneDeCellules(2);
-        repaint();
-    }//GEN-LAST:event_btnColonne2ActionPerformed
-
-    private void btnColonne3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColonne3ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerColonneDeCellules(3);
-        repaint();
-    }//GEN-LAST:event_btnColonne3ActionPerformed
-
-    private void btnColonne4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColonne4ActionPerformed
-        // TODO add your handling code here:
-        this.grille.activerColonneDeCellules(4);
-        repaint();
-    }//GEN-LAST:event_btnColonne4ActionPerformed
 
     private void btnDiagonaleDescendanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiagonaleDescendanteActionPerformed
         // TODO add your handling code here:
         this.grille.activerDiagonaleDescendante();
         repaint();
+        nbCoups++;
+        FinDePartie();
+      
     }//GEN-LAST:event_btnDiagonaleDescendanteActionPerformed
 
     /**
@@ -292,18 +332,11 @@ public void FinPartie();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanneauBoutonsHorizontaux;
+    private javax.swing.JPanel PanneauBoutonsVerticaux;
+    private javax.swing.JPanel PanneauDifficulté;
     private javax.swing.JPanel PanneauGrille;
-    private javax.swing.JButton btnColonne0;
-    private javax.swing.JButton btnColonne1;
-    private javax.swing.JButton btnColonne2;
-    private javax.swing.JButton btnColonne3;
-    private javax.swing.JButton btnColonne4;
     private javax.swing.JButton btnDiagonaleDescendante;
     private javax.swing.JButton btnDiagonaleMontante;
-    private javax.swing.JButton btnLigne0;
-    private javax.swing.JButton btnLigne1;
-    private javax.swing.JButton btnLigne2;
-    private javax.swing.JButton btnLigne3;
-    private javax.swing.JButton btnLigne4;
     // End of variables declaration//GEN-END:variables
 }
